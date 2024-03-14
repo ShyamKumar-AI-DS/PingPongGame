@@ -1,7 +1,7 @@
 # PingPongGame
 
 ## Aim:
-
+To create a 2D Ping Pong game using Unity Engine.
 
 
 ## Algorithm:
@@ -32,8 +32,74 @@ In PaddleRight (Negative button - down and positive buttom - up) and paddleLeft(
  After completing, to move the ball, in the ball inspector give the value for speed
  
  ## Program:
- 
+ ### Player Script:
+ ```
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System.Threading;
+
+public class PlayerScript : MonoBehaviour
+{
+    public float speed;
+    public float jumpforce;
+    private Rigidbody2D rb;
+    public CoinManager cc;
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
+
+    void Update()
+    {
+        float moveinp = Input.GetAxisRaw("Horizontal");
+        transform.position += new Vector3(moveinp, 0, 0) * speed * Time.deltaTime;
+
+        if (Input.GetKeyDown(KeyCode.Space)&&Mathf.Abs(rb.velocity.y) < 0.001f)
+        {
+            rb.AddForce(new Vector2(0, jumpforce), ForceMode2D.Impulse);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Destroy"))
+        {
+            cc.coincount++;
+            Destroy(collision.gameObject);
+        }
+    }
+}
+
+```
+### Coin Manager :
+```
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System.Threading;
+using UnityEngine.UI;
+
+public class CoinManager : MonoBehaviour
+{
+    public int coincount;
+    public Text value;
+    void Start()
+    {
+        
+    }
+
+    void Update()
+    {
+        value.text = coincount.ToString();
+    }
+}
+
+```
  ## Output:
- 
+ ![ARVREX03OUT](https://github.com/ShyamKumar-AI-DS/PingPongGame/assets/93427182/1fcd7a1d-fb73-4029-82a0-7e84e582f90a)
+
  ## Result:
+ Thus, a ping pong 2D game was created and executed successfully.
 
